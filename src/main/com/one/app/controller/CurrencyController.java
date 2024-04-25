@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class CurrencyController {
     private String[] availableCurrencies;
-    private String apiKey = "6b072b2993a83b81ce679b58";
+    private String apiKey = "";
     private String currency;
     private String currencyToConvert;
     private int quantity;
