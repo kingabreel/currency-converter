@@ -2,7 +2,10 @@ package view;
 
 import controller.CurrencyController;
 import model.Currency;
+import utils.CustomException;
 
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CurrencyView {
@@ -45,24 +48,42 @@ public class CurrencyView {
         currency = scanner.nextLine();
 
         if (currency.equalsIgnoreCase("exit")) closeApp();
-        if(!controller.isCurrencyAvailable(currency)) throw new RuntimeException();
-
+        if(!controller.isCurrencyAvailable(currency)) {
+            throw new CustomException(currency + " is not available.");
+        }
         System.out.print("Please select another currency that " + currency + " will be converted: ");
         currencyToConvert = scanner.nextLine();
 
         if (currencyToConvert.equalsIgnoreCase("exit")) closeApp();
-        if (!controller.isCurrencyAvailable(currencyToConvert)) throw new RuntimeException();
+        if (!controller.isCurrencyAvailable(currencyToConvert)) throw new CustomException(currencyToConvert + " is not available.");
 
-        System.out.print("How much " + currency + " do you want to convert? ");
-        int quantity = scanner.nextInt();
+        int quantity;
+        try {
+            System.out.print("How much " + currency.toUpperCase() + " do you want to convert? ");
+            quantity = scanner.nextInt();
+        } catch (InputMismatchException e){
+            System.out.println("Invalid numeric value.");
+            quantity = scanner.nextInt();
+        }
 
-        Currency currencyConverted = controller.startConvertion(currency, quantity, currencyToConvert);
+        if (quantity <= 0) throw new CustomException("Quantity must be greater than 0");
+
+        scanner.nextLine();
+        Currency currencyConverted = controller.startConvertion(currency.toUpperCase(), quantity, currencyToConvert.toUpperCase());
 
         convertedValue(currencyConverted);
     }
     private void convertedValue(Currency currency){
         System.out.println("\n" + currency.quantity() + currency.code() + " to " + currency.currencyToConvert() + " is " +
                 controller.getValueConverted(currency) + currency.currencyToConvert());
+
+        controller.saveSearchHistory(currency);
+        System.out.println("\n");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void closeApp(){

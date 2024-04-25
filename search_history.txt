@@ -1,0 +1,24 @@
+Date: 04/25/2024 16:14:34
+Quantity: 29
+Source currency: USD
+Destiny currency: BRL
+Result: 149.1354 BRL
+------------------------------
+Date: 04/25/2024 16:14:48
+Quantity: 92
+Source currency: BOB
+Destiny currency: EUR
+Result: 12.4292 EUR
+------------------------------
+Date: 04/25/2024 16:14:55
+Quantity: 3
+Source currency: BRL
+Destiny currency: AUD
+Result: 0.897 AUD
+------------------------------
+Date: 04/25/2024 16:16:39
+Quantity: 29
+Source currency: EUR
+Destiny currency: AUD
+Result: 47.7427 AUD
+------------------------------

@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import model.Currency;
 import model.response.CurrencyApiResponse;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class CurrencyController {
     private String[] availableCurrencies;
@@ -17,7 +18,7 @@ public class CurrencyController {
     private int quantity;
     private String endpoint;
 
-    public CurrencyController(){
+    public CurrencyController() {
         availableCurrencies = new String[8];
         availableCurrencies[0] = "USD";
         availableCurrencies[1] = "BRL";
@@ -29,16 +30,16 @@ public class CurrencyController {
         availableCurrencies[7] = "AUD";
     }
 
-    public boolean isCurrencyAvailable(String currency){
-        for (int i = 0; i < availableCurrencies.length; i++){
-            if (currency.equalsIgnoreCase(availableCurrencies[i])){
+    public boolean isCurrencyAvailable(String currency) {
+        for (int i = 0; i < availableCurrencies.length; i++) {
+            if (currency.equalsIgnoreCase(availableCurrencies[i])) {
                 return true;
             }
         }
         return false;
     }
 
-    public Currency startConvertion(String currency, int quantity, String currencyToConvert){
+    public Currency startConvertion(String currency, int quantity, String currencyToConvert) {
         this.currency = currency;
         this.currencyToConvert = currencyToConvert;
         this.quantity = quantity;
@@ -47,7 +48,7 @@ public class CurrencyController {
         return GetCurrency();
     }
 
-    private Currency GetCurrency(){
+    private Currency GetCurrency() {
         try {
             URL url = new URL(endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -77,7 +78,27 @@ public class CurrencyController {
         }
     }
 
-    public double getValueConverted(Currency currencyConverted){
+    public double getValueConverted(Currency currencyConverted) {
         return currencyConverted.quantity() * currencyConverted.conversion_rate();
+    }
+
+    public void saveSearchHistory(Currency currencyConverted) {
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("search_history.txt", true)))) {
+
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+            String formattedDateTime = currentDateTime.format(formatter);
+
+            writer.println("Date: " + formattedDateTime);
+            writer.println("Quantity: " + currencyConverted.quantity());
+            writer.println("Source currency: " + currencyConverted.code());
+            writer.println("Destiny currency: " + currencyConverted.currencyToConvert());
+            writer.println("Result: " + getValueConverted(currencyConverted) + " " + currencyConverted.currencyToConvert());
+            writer.println("------------------------------");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
