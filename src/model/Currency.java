@@ -1,4 +1,4 @@
 package model;
 
-public class Currency {
+public record Currency(String code, int quantity, String currencyToConvert, double conversion_rate, String date) {
 }
