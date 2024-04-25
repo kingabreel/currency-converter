@@ -22,3 +22,9 @@ Source currency: EUR
 Destiny currency: AUD
 Result: 47.7427 AUD
 ------------------------------
+Date: 04/25/2024 17:08:52
+Quantity: 20
+Source currency: USD
+Destiny currency: BRL
+Result: 102.852 BRL
+------------------------------
