@@ -4,7 +4,6 @@ import controller.CurrencyController;
 import model.Currency;
 import utils.CustomException;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
